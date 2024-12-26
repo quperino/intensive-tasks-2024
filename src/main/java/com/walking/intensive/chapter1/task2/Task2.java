@@ -34,55 +34,64 @@ package com.walking.intensive.chapter1.task2;
 public class Task2 {
     public static void main(String[] args) {
 //        Для собственных проверок можете делать любые изменения в этом методе
-        System.out.println(getFlatLocation(9, 9, 108));
+        System.out.println(getFlatLocation(4, 4, 32));
     }
 
     static String getFlatLocation(int floorAmount, int entranceAmount, int flatNumber) {
         //        Место для вашего кода
-        final int FLATS_AMOUNT_ON_ONE_FLOOR = 4;
 
-        int flatAmount = FLATS_AMOUNT_ON_ONE_FLOOR * floorAmount * entranceAmount; // Количество квартир в доме
+        // Константы
+        final int FLAT_AMOUNT_ON_ONE_FLOOR = 4;
+        final int FLAT_AMOUNT_ON_ONE_HOUSE = floorAmount * entranceAmount * FLAT_AMOUNT_ON_ONE_FLOOR;
+        final int FLAT_AMOUNT_ON_ONE_ENTRANCE = floorAmount * FLAT_AMOUNT_ON_ONE_FLOOR;
 
-        int entranceNumber;
-        int floorNumber;
-        String flatLocationString;
+        // Проверка на входные данные
+        if (flatNumber > FLAT_AMOUNT_ON_ONE_HOUSE) {
+            return "Takoi kvartiry ne seschestvuet.";
+        }
+        if (floorAmount <= 0 || entranceAmount <= 0 || flatNumber <= 0) {
+            return "Nekorrectnye vkhodnye dannye.";
+        }
 
-        if ((floorAmount > 0) && (entranceAmount > 0) && (flatAmount >= flatNumber) && (flatNumber > 0)) {
+        int flatNumberEquivalent = flatNumber;
+        int entranceNumber = 1;
 
-            // Проверка на первый этаж первого подъезда
-            if (flatNumber < 5) {
-                floorNumber = 1;
-            } else {
-                floorNumber = flatNumber / FLATS_AMOUNT_ON_ONE_FLOOR;
-            }
-
-            int flatLocationInt = flatNumber % FLATS_AMOUNT_ON_ONE_FLOOR;
-
-            flatLocationString = switch (flatLocationInt) {
-                case 1:
-                    yield "sleva ot lifta, vlevo";
-                case 2:
-                    yield "sleva ot lifta, vpravo";
-                case 3:
-                    yield "sprava ot lifta, vlevo";
-                case 0:
-                    yield "sprava ot lifta, vpravo";
-                default:
-                    yield "";
-            };
-
-            entranceNumber = 1; // Минимально возможное число подъездов в доме
-
-            while (floorNumber > floorAmount) {
-                floorNumber -= floorAmount;
+        // Если квартира расположена не в первом подъезде
+        if (flatNumber > FLAT_AMOUNT_ON_ONE_ENTRANCE) {
+            // Вычисление номера квартиры, эквивалентного относительно первого подъезда + вычисление номера подъезда
+            do {
+                flatNumberEquivalent -= FLAT_AMOUNT_ON_ONE_ENTRANCE;
                 entranceNumber += 1;
             }
-
-        }
-        else {
-            return ("Nekorreknie vkhodnie dannie");
+            while (flatNumberEquivalent > FLAT_AMOUNT_ON_ONE_ENTRANCE);
         }
 
-        return (flatNumber + " kv - " + entranceNumber + " pod''ezd, " + floorNumber + " etazh, " + flatLocationString);
+        int floorNumber;
+
+        // Если квартира имеет номер, не кратный 4
+        if (flatNumberEquivalent % 4 != 0) {
+            // Вычисление этажа
+            floorNumber = flatNumberEquivalent / 4 + 1;
+        } else {
+            floorNumber = flatNumberEquivalent / 4;
+        }
+
+        // Если квартира расположена не на первом этаже
+        if (floorNumber > 1) {
+            // Вычисление расположения квартиры, относительно первого этажа
+            do {
+                flatNumberEquivalent -= FLAT_AMOUNT_ON_ONE_FLOOR;
+            }
+            while (flatNumberEquivalent > FLAT_AMOUNT_ON_ONE_FLOOR);
+        }
+
+        String flatLocationOnAFloor = switch (flatNumberEquivalent) {
+            case 1 -> "sleva ot lifta, vlevo";
+            case 2 -> "sleva ot lifta, vpravo";
+            case 3 -> "sprava ot lifta, vlevo";
+            default -> "sprava ot lifta, vpravo";
+        };
+
+        return flatNumber + " kv - " + entranceNumber + " pod_ezd, " + floorNumber + " etazh, " + flatLocationOnAFloor;
     }
 }
