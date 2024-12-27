@@ -23,12 +23,13 @@ package com.walking.intensive.chapter1.task3;
  *
  * <p><a href="https://github.com/KFalcon2022/intensive-tasks-2024/blob/master/README.md">Требования к оформлению</a>
  */
+
 public class Task3 {
     public static void main(String[] args) {
         System.out.println(isLeap(2020));
     }
 
     static boolean isLeap(int year) {
-        return ((year % 400 == 0) || (year % 4 == 0) && (year % 100 != 0)) && (year > 0);
+        return (year > 0) && ((year % 400 == 0) || (year % 4 == 0) && (year % 100 != 0));
     }
 }
