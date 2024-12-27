@@ -40,45 +40,38 @@ public class Task2 {
     static String getFlatLocation(int floorAmount, int entranceAmount, int flatNumber) {
         //        Место для вашего кода
 
-        // Константы
         final int FLAT_AMOUNT_ON_ONE_FLOOR = 4;
-        final int FLAT_AMOUNT_ON_ONE_HOUSE = floorAmount * entranceAmount * FLAT_AMOUNT_ON_ONE_FLOOR;
-        final int FLAT_AMOUNT_ON_ONE_ENTRANCE = floorAmount * FLAT_AMOUNT_ON_ONE_FLOOR;
+        int flatAmountOnOneHouse = floorAmount * entranceAmount * FLAT_AMOUNT_ON_ONE_FLOOR;
+        int flatAmountOnOneEntrance = floorAmount * FLAT_AMOUNT_ON_ONE_FLOOR;
 
         // Проверка на входные данные
-        if (flatNumber > FLAT_AMOUNT_ON_ONE_HOUSE) {
-            return "Takoi kvartiry ne seschestvuet.";
+        if (flatNumber > flatAmountOnOneHouse) {
+            return "Такой квартиры не существует";
         }
         if (floorAmount <= 0 || entranceAmount <= 0 || flatNumber <= 0) {
-            return "Nekorrectnye vkhodnye dannye.";
+            return "Некорректные входные данные";
         }
 
         int flatNumberEquivalent = flatNumber;
         int entranceNumber = 1;
 
-        // Если квартира расположена не в первом подъезде
-        if (flatNumber > FLAT_AMOUNT_ON_ONE_ENTRANCE) {
-            // Вычисление номера квартиры, эквивалентного относительно первого подъезда + вычисление номера подъезда
+        if (flatNumber > flatAmountOnOneEntrance) {
             do {
-                flatNumberEquivalent -= FLAT_AMOUNT_ON_ONE_ENTRANCE;
+                flatNumberEquivalent -= flatAmountOnOneEntrance;
                 entranceNumber += 1;
             }
-            while (flatNumberEquivalent > FLAT_AMOUNT_ON_ONE_ENTRANCE);
+            while (flatNumberEquivalent > flatAmountOnOneEntrance);
         }
 
         int floorNumber;
 
-        // Если квартира имеет номер, не кратный 4
         if (flatNumberEquivalent % 4 != 0) {
-            // Вычисление этажа
             floorNumber = flatNumberEquivalent / 4 + 1;
         } else {
             floorNumber = flatNumberEquivalent / 4;
         }
-
-        // Если квартира расположена не на первом этаже
+        
         if (floorNumber > 1) {
-            // Вычисление расположения квартиры, относительно первого этажа
             do {
                 flatNumberEquivalent -= FLAT_AMOUNT_ON_ONE_FLOOR;
             }
@@ -86,12 +79,12 @@ public class Task2 {
         }
 
         String flatLocationOnAFloor = switch (flatNumberEquivalent) {
-            case 1 -> "sleva ot lifta, vlevo";
-            case 2 -> "sleva ot lifta, vpravo";
-            case 3 -> "sprava ot lifta, vlevo";
-            default -> "sprava ot lifta, vpravo";
+            case 1 -> "слева от лифта, влево";
+            case 2 -> "слева от лифта, вправо";
+            case 3 -> "справа от лифта, влево";
+            default -> "справа от лифта, вправо";
         };
 
-        return flatNumber + " kv - " + entranceNumber + " pod_ezd, " + floorNumber + " etazh, " + flatLocationOnAFloor;
+        return flatNumber + " кв – " + entranceNumber + " подъезд, " + floorNumber + " этаж, " + flatLocationOnAFloor;
     }
 }
