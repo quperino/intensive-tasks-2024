@@ -24,9 +24,9 @@ package com.walking.intensive.chapter1.task4;
  */
 public class Task4 {
     public static void main(String[] args) {
-        double a = 0;
-        double b = 0;
-        double c = 0;
+        double a = 4;
+        double b = 4;
+        double c = 1;
         System.out.println(solveEquation(a, b, c));
     }
 
@@ -35,9 +35,9 @@ public class Task4 {
 
         if (a == 0 && b == 0 && c == 0) {
             s = "Бесконечное множество решений.";
-        } else if (a == 0 && b == 0) {
+        } else if (b * b < 4 * a * c) {
             s = "Количество решений: 0.";
-        } else if (a == 0 && c != 0) {
+        } else if (b * b == 4 * a * c) {
             s = "Количество решений: 1. Корень: " + (-c / b);
         } else {
             double discriminant = (Math.pow(b, 2)) - (4 * a * c);
