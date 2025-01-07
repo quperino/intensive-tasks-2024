@@ -31,35 +31,38 @@ public class Task7 {
     }
 
     static int getFriendlyPair(int n) {
-        int sumOfFactorsForFirstNumber;
-        int sumOfFactorsForSecondNumber;
-        int maxOfTwoNumbers = -1;
+        int friendlyPair = -1;
+        if (n > 1_000_000) {
+            return friendlyPair;
+        }
 
-        if (n <= 1_000_000) {
-            for (int i = n - 1; i > 0; i--) {
-                sumOfFactorsForFirstNumber = 0;
-                for (int j = 1; j <= i / 2; j++) {
-                    if (i % j == 0) {
-                        sumOfFactorsForFirstNumber += j;
-                    }
-                }
+        for (int i = n - 1; i > 0; i--) {
+            int firstNumbersFactorsSum = getFactorsSum(i);
 
-                sumOfFactorsForSecondNumber = 0;
-                if (sumOfFactorsForFirstNumber < n && i != sumOfFactorsForFirstNumber) {
-                    for (int j = 1; j <= sumOfFactorsForFirstNumber / 2; j++) {
-                        if (sumOfFactorsForFirstNumber % j == 0) {
-                            sumOfFactorsForSecondNumber += j;
-                        }
-                    }
-                }
+            if (firstNumbersFactorsSum < n && i != firstNumbersFactorsSum) {
+                int secondNumbersFactorsSum = getFactorsSum(firstNumbersFactorsSum);
 
-                if (sumOfFactorsForSecondNumber == i) {
-                    maxOfTwoNumbers = Math.max(i, sumOfFactorsForFirstNumber);
+                if (secondNumbersFactorsSum == i) {
+                    friendlyPair = Math.max(i, firstNumbersFactorsSum);
                     break;
                 }
+
+            }
+
+        }
+
+        return friendlyPair;
+    }
+
+    static int getFactorsSum(int i) {
+        int numbersFactorsSum = 0;
+
+        for (int j = 1; j <= i / 2; j++) {
+            if (i % j == 0) {
+                numbersFactorsSum += j;
             }
         }
 
-        return maxOfTwoNumbers;
+        return numbersFactorsSum;
     }
 }
